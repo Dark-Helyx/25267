@@ -1,172 +1,214 @@
-import React, { useState } from 'react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Element Search</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 2rem;
+      background: #f4f6f9;
+    }
+    h1 {
+      color: #333;
+    }
+    input {
+      padding: 10px;
+      font-size: 16px;
+      width: 300px;
+      border: 2px solid #555;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    #results {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #222;
+    }
+    .element {
+      background: white;
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin: 10px auto;
+      max-width: 400px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+    .element strong {
+      font-size: 20px;
+      display: block;
+      margin-bottom: 5px;
+    }
+    .property {
+      margin: 3px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Element Search</h1>
+  <input type="text" id="searchBox" placeholder="Search for an element...">
+  <div id="results"></div>
 
-export default function PeriodicLookup() {
-  const [query, setQuery] = useState('');
-  const [result, setResult] = useState(null);
+  <script>
+    const elements = [
+    {number: 1, symbol: "H", name: "Hydrogen", mass: 1.008, family: "Nonmetal"},
+    {number: 2, symbol: "He", name: "Helium", mass: 4.0026, family: "Noble Gas"},
+    {number: 3, symbol: "Li", name: "Lithium", mass: 6.94, family: "Alkali Metal"},
+    {number: 4, symbol: "Be", name: "Beryllium", mass: 9.0122, family: "Alkaline Earth Metal"},
+    {number: 5, symbol: "B", name: "Boron", mass: 10.81, family: "Metalloid"},
+    {number: 6, symbol: "C", name: "Carbon", mass: 12.011, family: "Nonmetal"},
+    {number: 7, symbol: "N", name: "Nitrogen", mass: 14.007, family: "Nonmetal"},
+    {number: 8, symbol: "O", name: "Oxygen", mass: 15.999, family: "Nonmetal"},
+    {number: 9, symbol: "F", name: "Fluorine", mass: 18.998, family: "Halogen"},
+    {number: 10, symbol: "Ne", name: "Neon", mass: 20.180, family: "Noble Gas"},
+    {number: 11, symbol: "Na", name: "Sodium", mass: 22.990, family: "Alkali Metal"},
+    {number: 12, symbol: "Mg", name: "Magnesium", mass: 24.305, family: "Alkaline Earth Metal"},
+    {number: 13, symbol: "Al", name: "Aluminium", mass: 26.982, family: "Post-transition Metal"},
+    {number: 14, symbol: "Si", name: "Silicon", mass: 28.085, family: "Metalloid"},
+    {number: 15, symbol: "P", name: "Phosphorus", mass: 30.974, family: "Nonmetal"},
+    {number: 16, symbol: "S", name: "Sulfur", mass: 32.06, family: "Nonmetal"},
+    {number: 17, symbol: "Cl", name: "Chlorine", mass: 35.45, family: "Halogen"},
+    {number: 18, symbol: "Ar", name: "Argon", mass: 39.948, family: "Noble Gas"},
+    {number: 19, symbol: "K", name: "Potassium", mass: 39.098, family: "Alkali Metal"},
+    {number: 20, symbol: "Ca", name: "Calcium", mass: 40.078, family: "Alkaline Earth Metal"},
+    {number: 21, symbol: "Sc", name: "Scandium", mass: 44.956, family: "Transition Metal"},
+    {number: 22, symbol: "Ti", name: "Titanium", mass: 47.867, family: "Transition Metal"},
+    {number: 23, symbol: "V", name: "Vanadium", mass: 50.942, family: "Transition Metal"},
+    {number: 24, symbol: "Cr", name: "Chromium", mass: 51.996, family: "Transition Metal"},
+    {number: 25, symbol: "Mn", name: "Manganese", mass: 54.938, family: "Transition Metal"},
+    {number: 26, symbol: "Fe", name: "Iron", mass: 55.845, family: "Transition Metal"},
+    {number: 27, symbol: "Co", name: "Cobalt", mass: 58.933, family: "Transition Metal"},
+    {number: 28, symbol: "Ni", name: "Nickel", mass: 58.693, family: "Transition Metal"},
+    {number: 29, symbol: "Cu", name: "Copper", mass: 63.546, family: "Transition Metal"},
+    {number: 30, symbol: "Zn", name: "Zinc", mass: 65.38, family: "Transition Metal"},
+    {number: 31, symbol: "Ga", name: "Gallium", mass: 69.723, family: "Post-transition Metal"},
+    {number: 32, symbol: "Ge", name: "Germanium", mass: 72.630, family: "Metalloid"},
+    {number: 33, symbol: "As", name: "Arsenic", mass: 74.922, family: "Metalloid"},
+    {number: 34, symbol: "Se", name: "Selenium", mass: 78.971, family: "Nonmetal"},
+    {number: 35, symbol: "Br", name: "Bromine", mass: 79.904, family: "Halogen"},
+    {number: 36, symbol: "Kr", name: "Krypton", mass: 83.798, family: "Noble Gas"},
+    {number: 37, symbol: "Rb", name: "Rubidium", mass: 85.468, family: "Alkali Metal"},
+    {number: 38, symbol: "Sr", name: "Strontium", mass: 87.62, family: "Alkaline Earth Metal"},
+    {number: 39, symbol: "Y", name: "Yttrium", mass: 88.906, family: "Transition Metal"},
+    {number: 40, symbol: "Zr", name: "Zirconium", mass: 91.224, family: "Transition Metal"},
+    {number: 41, symbol: "Nb", name: "Niobium", mass: 92.906, family: "Transition Metal"},
+    {number: 42, symbol: "Mo", name: "Molybdenum", mass: 95.95, family: "Transition Metal"},
+    {number: 43, symbol: "Tc", name: "Technetium", mass: 98, family: "Transition Metal"},
+    {number: 44, symbol: "Ru", name: "Ruthenium", mass: 101.07, family: "Transition Metal"},
+    {number: 45, symbol: "Rh", name: "Rhodium", mass: 102.91, family: "Transition Metal"},
+    {number: 46, symbol: "Pd", name: "Palladium", mass: 106.42, family: "Transition Metal"},
+    {number: 47, symbol: "Ag", name: "Silver", mass: 107.87, family: "Transition Metal"},
+    {number: 48, symbol: "Cd", name: "Cadmium", mass: 112.41, family: "Transition Metal"},
+    {number: 49, symbol: "In", name: "Indium", mass: 114.82, family: "Post-transition Metal"},
+    {number: 50, symbol: "Sn", name: "Tin", mass: 118.71, family: "Post-transition Metal"},
+    {number: 51, symbol: "Sb", name: "Antimony", mass: 121.76, family: "Metalloid"},
+    {number: 52, symbol: "Te", name: "Tellurium", mass: 127.60, family: "Metalloid"},
+    {number: 53, symbol: "I", name: "Iodine", mass: 126.90, family: "Halogen"},
+    {number: 54, symbol: "Xe", name: "Xenon", mass: 131.29, family: "Noble Gas"},
+    {number: 55, symbol: "Cs", name: "Cesium", mass: 132.91, family: "Alkali Metal"},
+    {number: 56, symbol: "Ba", name: "Barium", mass: 137.33, family: "Alkaline Earth Metal"},
+    {number: 57, symbol: "La", name: "Lanthanum", mass: 138.91, family: "Lanthanide"},
+    {number: 58, symbol: "Ce", name: "Cerium", mass: 140.12, family: "Lanthanide"},
+    {number: 59, symbol: "Pr", name: "Praseodymium", mass: 140.91, family: "Lanthanide"},
+    {number: 60, symbol: "Nd", name: "Neodymium", mass: 144.24, family: "Lanthanide"},
+    {number: 61, symbol: "Pm", name: "Promethium", mass: 145, family: "Lanthanide"},
+    {number: 62, symbol: "Sm", name: "Samarium", mass: 150.36, family: "Lanthanide"},
+    {number: 63, symbol: "Eu", name: "Europium", mass: 151.96, family: "Lanthanide"},
+    {number: 64, symbol: "Gd", name: "Gadolinium", mass: 157.25, family: "Lanthanide"},
+    {number: 65, symbol: "Tb", name: "Terbium", mass: 158.93, family: "Lanthanide"},
+    {number: 66, symbol: "Dy", name: "Dysprosium", mass: 162.50, family: "Lanthanide"},
+    {number: 67, symbol: "Ho", name: "Holmium", mass: 164.93, family: "Lanthanide"},
+    {number: 68, symbol: "Er", name: "Erbium", mass: 167.26, family: "Lanthanide"},
+    {number: 69, symbol: "Tm", name: "Thulium", mass: 168.93, family: "Lanthanide"},
+    {number: 70, symbol: "Yb", name: "Ytterbium", mass: 173.05, family: "Lanthanide"},
+    {number: 71, symbol: "Lu", name: "Lutetium", mass: 174.97, family: "Lanthanide"},
+    {number: 72, symbol: "Hf", name: "Hafnium", mass: 178.49, family: "Transition Metal"},
+    {number: 73, symbol: "Ta", name: "Tantalum", mass: 180.95, family: "Transition Metal"},
+    {number: 74, symbol: "W", name: "Tungsten", mass: 183.84, family: "Transition Metal"},
+    {number: 75, symbol: "Re", name: "Rhenium", mass: 186.21, family: "Transition Metal"},
+    {number: 76, symbol: "Os", name: "Osmium", mass: 190.23, family: "Transition Metal"},
+    {number: 77, symbol: "Ir", name: "Iridium", mass: 192.22, family: "Transition Metal"},
+    {number: 78, symbol: "Pt", name: "Platinum", mass: 195.08, family: "Transition Metal"},
+    {number: 79, symbol: "Au", name: "Gold", mass: 196.97, family: "Transition Metal"},
+    {number: 80, symbol: "Hg", name: "Mercury", mass: 200.59, family: "Transition Metal"},
+    {number: 81, symbol: "Tl", name: "Thallium", mass: 204.38, family: "Post-transition Metal"},
+    {number: 82, symbol: "Pb", name: "Lead", mass: 207.2, family: "Post-transition Metal"},
+    {number: 83, symbol: "Bi", name: "Bismuth", mass: 208.98, family: "Post-transition Metal"},
+    {number: 84, symbol: "Po", name: "Polonium", mass: 209, family: "Metalloid"},
+    {number: 85, symbol: "At", name: "Astatine", mass: 210, family: "Halogen"},
+    {number: 86, symbol: "Rn", name: "Radon", mass: 222, family: "Noble Gas"},
+    {number: 87, symbol: "Fr", name: "Francium", mass: 223, family: "Alkali Metal"},
+    {number: 88, symbol: "Ra", name: "Radium", mass: 226, family: "Alkaline Earth Metal"},
+    {number: 89, symbol: "Ac", name: "Actinium", mass: 227, family: "Actinide"},
+    {number: 90, symbol: "Th", name: "Thorium", mass: 232.04, family: "Actinide"},
+    {number: 91, symbol: "Pa", name: "Protactinium", mass: 231.04, family: "Actinide"},
+    {number: 92, symbol: "U", name: "Uranium", mass: 238.03, family: "Actinide"},
+    {number: 93, symbol: "Np", name: "Neptunium", mass: 237, family: "Actinide"},
+    {number: 94, symbol: "Pu", name: "Plutonium", mass: 244, family: "Actinide"},
+    {number: 95, symbol: "Am", name: "Americium", mass: 243, family: "Actinide"},
+    {number: 96, symbol: "Cm", name: "Curium", mass: 247, family: "Actinide"},
+    {number: 97, symbol: "Bk", name: "Berkelium", mass: 247, family: "Actinide"},
+    {number: 98, symbol: "Cf", name: "Californium", mass: 251, family: "Actinide"},
+    {number: 99, symbol: "Es", name: "Einsteinium", mass: 252, family: "Actinide"},
+    {number: 100, symbol: "Fm", name: "Fermium", mass: 257, family: "Actinide"},
+    {number: 101, symbol: "Md", name: "Mendelevium", mass: 258, family: "Actinide"},
+    {number: 102, symbol: "No", name: "Nobelium", mass: 259, family: "Actinide"},
+    {number: 103, symbol: "Lr", name: "Lawrencium", mass: 266, family: "Actinide"},
+    {number: 104, symbol: "Rf", name: "Rutherfordium", mass: 267, family: "Transition Metal"},
+    {number: 105, symbol: "Db", name: "Dubnium", mass: 268, family: "Transition Metal"},
+    {number: 106, symbol: "Sg", name: "Seaborgium", mass: 269, family: "Transition Metal"},
+    {number: 107, symbol: "Bh", name: "Bohrium", mass: 270, family: "Transition Metal"},
+    {number: 108, symbol: "Hs", name: "Hassium", mass: 269, family: "Transition Metal"},
+    {number: 109, symbol: "Mt", name: "Meitnerium", mass: 278, family: "Transition Metal"},
+    {number: 110, symbol: "Ds", name: "Darmstadt", mass: 281, family: "Transition Metal"},
+    {number: 111, symbol: "Rg", name: "Roentgenium", mass: 282, family: "Transition Metal"},
+    {number: 112, symbol: "Cn", name: "Copernicium", mass: 285, family: "Transition Metal"},
+    {number: 113, symbol: "Nh", name: "Nihonium", mass: 286, family: "Post-transition Metal"},
+    {number: 114, symbol: "Fl", name: "Flerovium", mass: 289, family: "Post-transition Metal"},
+    {number: 115, symbol: "Mc", name: "Moscovium", mass: 290, family: "Post-transition Metal"},
+    {number: 116, symbol: "Lv", name: "Livermorium", mass: 293, family: "Post-transition Metal"},
+    {number: 117, symbol: "Ts", name: "Tennessine", mass: 294, family: "Halogen"},
+    {number: 118, symbol: "Og", name: "Oganesson", mass: 294, family: "Noble Gas"}
+    ];
 
-const elements = [
-  { number: 1, symbol: 'H', name: 'Hydrogen', atomic_mass: 1.008, category: 'Nonmetal', electron_configuration: '1s1', electronegativity: 2.20, density: 0.00008988, melting_c: -259.14, boiling_c: -252.87, summary: 'Lightest element' },
-  { number: 2, symbol: 'He', name: 'Helium', atomic_mass: 4.002602, category: 'Noble gas', electron_configuration: '1s2', electronegativity: null, density: 0.0001785, melting_c: null, boiling_c: -268.93, summary: 'Noble gas, inert' },
-  { number: 3, symbol: 'Li', name: 'Lithium', atomic_mass: 6.94, category: 'Alkali metal', electron_configuration: '[He] 2s1', electronegativity: 0.98, density: 0.534, melting_c: 180.54, boiling_c: 1342, summary: 'Lightest metal' },
-  { number: 4, symbol: 'Be', name: 'Beryllium', atomic_mass: 9.0122, category: 'Alkaline earth metal', electron_configuration: '[He] 2s2', electronegativity: 1.57, density: 1.848, melting_c: 1278, boiling_c: 2970, summary: 'Hard, brittle metal' },
-  { number: 5, symbol: 'B', name: 'Boron', atomic_mass: 10.81, category: 'Metalloid', electron_configuration: '[He] 2s2 2p1', electronegativity: 2.04, density: 2.34, melting_c: 2076, boiling_c: 3927, summary: 'Used in borosilicate glass' },
-  { number: 6, symbol: 'C', name: 'Carbon', atomic_mass: 12.011, category: 'Nonmetal', electron_configuration: '[He] 2s2 2p2', electronegativity: 2.55, density: 2.267, melting_c: 3550, boiling_c: 4027, summary: 'Basis of life' },
-  { number: 7, symbol: 'N', name: 'Nitrogen', atomic_mass: 14.007, category: 'Nonmetal', electron_configuration: '[He] 2s2 2p3', electronegativity: 3.04, density: 0.0012506, melting_c: -210.00, boiling_c: -195.79, summary: 'Colorless, odorless gas' },
-  { number: 8, symbol: 'O', name: 'Oxygen', atomic_mass: 15.999, category: 'Nonmetal', electron_configuration: '[He] 2s2 2p4', electronegativity: 3.44, density: 0.001429, melting_c: -218.79, boiling_c: -182.96, summary: 'Essential for respiration' },
-  { number: 9, symbol: 'F', name: 'Fluorine', atomic_mass: 18.998, category: 'Halogen', electron_configuration: '[He] 2s2 2p5', electronegativity: 3.98, density: 0.001696, melting_c: -219.67, boiling_c: -188.11, summary: 'Most reactive element' },
-  { number: 10, symbol: 'Ne', name: 'Neon', atomic_mass: 20.180, category: 'Noble gas', electron_configuration: '[He] 2s2 2p6', electronegativity: null, density: 0.0008999, melting_c: null, boiling_c: -246.05, summary: 'Inert, used in neon signs' },
-  { number: 11, symbol: 'Na', name: 'Sodium', atomic_mass: 22.990, category: 'Alkali metal', electron_configuration: '[Ne] 3s1', electronegativity: 0.93, density: 0.971, melting_c: 97.72, boiling_c: 883, summary: 'Soft, reactive metal' },
-  { number: 12, symbol: 'Mg', name: 'Magnesium', atomic_mass: 24.305, category: 'Alkaline earth metal', electron_configuration: '[Ne] 3s2', electronegativity: 1.31, density: 1.738, melting_c: 650, boiling_c: 1090, summary: 'Lightweight structural metal' },
-  { number: 13, symbol: 'Al', name: 'Aluminum', atomic_mass: 26.982, category: 'Post-transition metal', electron_configuration: '[Ne] 3s2 3p1', electronegativity: 1.61, density: 2.70, melting_c: 660.32, boiling_c: 2470, summary: 'Most abundant metal in Earth\'s crust' },
-  { number: 14, symbol: 'Si', name: 'Silicon', atomic_mass: 28.085, category: 'Metalloid', electron_configuration: '[Ne] 3s2 3p2', electronegativity: 1.90, density: 2.329, melting_c: 1414, boiling_c: 2900, summary: 'Semiconductor material' },
-  { number: 15, symbol: 'P', name: 'Phosphorus', atomic_mass: 30.974, category: 'Nonmetal', electron_configuration: '[Ne] 3s2 3p3', electronegativity: 2.19, density: 1.823, melting_c: 44.15, boiling_c: 280.5, summary: 'Essential for life' },
-  { number: 16, symbol: 'S', name: 'Sulfur', atomic_mass: 32.06, category: 'Nonmetal', electron_configuration: '[Ne] 3s2 3p4', electronegativity: 2.58, density: 2.067, melting_c: 115.21, boiling_c: 444.6, summary: 'Occurs naturally in minerals' },
-  { number: 17, symbol: 'Cl', name: 'Chlorine', atomic_mass: 35.45, category: 'Halogen', electron_configuration: '[Ne] 3s2 3p5', electronegativity: 3.16, density: 0.003214, melting_c: -101.5, boiling_c: -34.04, summary: 'Used in disinfectants' },
-  { number: 18, symbol: 'Ar', name: 'Argon', atomic_mass: 39.948, category: 'Noble gas', electron_configuration: '[Ne] 3s2 3p6', electronegativity: null, density: 0.001784, melting_c: null, boiling_c: -185.85, summary: 'Most abundant noble gas in Earth\'s atmosphere' },
-  { number: 19, symbol: 'K', name: 'Potassium', atomic_mass: 39.098, category: 'Alkali metal', electron_configuration: '[Ar] 4s1', electronegativity: 0.82, density: 0.862, melting_c: 63.38, boiling_c: 759, summary: 'Soft, silvery-white metal' },
-  { number: 20, symbol: 'Ca', name: 'Calcium', atomic_mass: 40.078, category: 'Alkaline earth metal', electron_configuration: '[Ar] 4s2', electronegativity: 1.00, density: 1.54, melting_c: 842, boiling_c: 1484, summary: 'Essential for living organisms' },
-  { number: 21, symbol: 'Sc', name: 'Scandium', atomic_mass: 44.956, category: 'Transition metal', electron_configuration: '[Ar] 3d1 4s2', electronegativity: 1.36, density: 2.989, melting_c: 1541, boiling_c: 2836, summary: 'Lightweight metal' },
-  { number: 22, symbol: 'Ti', name: 'Titanium', atomic_mass: 47.867, category: 'Transition metal', electron_configuration: '[Ar] 3d2 4s2', electronegativity: 1.54, density: 4.506, melting_c: 1668, boiling_c: 3287, summary: 'Strong, corrosion-resistant metal' },
-  { number: 23, symbol: 'V', name: 'Vanadium', atomic_mass: 50.942, category: 'Transition metal', electron_configuration: '[Ar] 3d3 4s2', electronegativity: 1.63, density: 6.11, melting_c: 1910, boiling_c: 3380, summary: 'Used in steel alloys' },
-  { number: 24, symbol: 'Cr', name: 'Chromium', atomic_mass: 51.996, category: 'Transition metal', electron_configuration: '[Ar] 3d5 4s1', electronegativity: 1.66, density: 7.19, melting_c: 1907, boiling_c: 2671, summary: 'Known for its high polish' },
-  { number: 25, symbol: 'Mn', name: 'Manganese', atomic_mass: 54.938, category: 'Transition metal', electron_configuration: '[Ar] 3d5 4s2', electronegativity: 1.55, density: 7.43, melting_c: 1244, boiling_c: 2095, summary: 'Used in steel production' },
-  { number: 26, symbol: 'Fe', name: 'Iron', atomic_mass: 55.845, category: 'Transition metal', electron_configuration: '[Ar] 3d6 4s2', electronegativity: 1.83, density: 7.874, melting_c: 1538, boiling_c: 2862, summary: 'Most used metal on Earth' },
-  { number: 27, symbol: 'Co', name: 'Cobalt', atomic_mass: 58.933, category: 'Transition metal', electron_configuration: '[Ar] 3d7 4s2', electronegativity: 1.88, density: 8.90, melting_c: 1495, boiling_c: 2927, summary: 'Magnetic metal' },
-  { number: 28, symbol: 'Ni', name: 'Nickel', atomic_mass: 58.693, category: 'Transition metal', electron_configuration: '[Ar] 3d8 4s2', electronegativity: 1.91, density: 8.908, melting_c: 1455, boiling_c: 2913, summary: 'Resistant to corrosion' },
-  { number: 29, symbol: 'Cu', name: 'Copper', atomic_mass: 63.546, category: 'Transition metal', electron_configuration: '[Ar] 3d10 4s1', electronegativity: 1.90, density: 8.96, melting_c: 1085, boiling_c: 2562, summary: 'Excellent electrical conductor' },
-  { number: 30, symbol: 'Zn', name: 'Zinc', atomic_mass: 65.38, category: 'Transition metal', electron_configuration: '[Ar] 3d10 4s2', electronegativity: 1.65, density: 7.14, melting_c: 419.53, boiling_c: 907, summary: 'Used for galvanization' },
-];
-// Elements 31–60
-const moreElements = [
-  { number: 31, symbol: 'Ga', name: 'Gallium', atomic_mass: 69.723, category: 'Post-transition metal', electron_configuration: '[Ar] 3d10 4s2 4p1', electronegativity: 1.81, density: 5.91, melting_c: 29.76, boiling_c: 2400, summary: 'Melts in your hand' },
-  { number: 32, symbol: 'Ge', name: 'Germanium', atomic_mass: 72.630, category: 'Metalloid', electron_configuration: '[Ar] 3d10 4s2 4p2', electronegativity: 2.01, density: 5.323, melting_c: 938.25, boiling_c: 2833, summary: 'Semiconductor material' },
-  { number: 33, symbol: 'As', name: 'Arsenic', atomic_mass: 74.922, category: 'Metalloid', electron_configuration: '[Ar] 3d10 4s2 4p3', electronegativity: 2.18, density: 5.72, melting_c: 817, boiling_c: 614, summary: 'Toxic metalloid' },
-  { number: 34, symbol: 'Se', name: 'Selenium', atomic_mass: 78.971, category: 'Nonmetal', electron_configuration: '[Ar] 3d10 4s2 4p4', electronegativity: 2.55, density: 4.81, melting_c: 221, boiling_c: 685, summary: 'Used in electronics and glass' },
-  { number: 35, symbol: 'Br', name: 'Bromine', atomic_mass: 79.904, category: 'Halogen', electron_configuration: '[Ar] 3d10 4s2 4p5', electronegativity: 2.96, density: 3.1028, melting_c: -7.2, boiling_c: 58.8, summary: 'Red-brown liquid at room temperature' },
-  { number: 36, symbol: 'Kr', name: 'Krypton', atomic_mass: 83.798, category: 'Noble gas', electron_configuration: '[Ar] 3d10 4s2 4p6', electronegativity: null, density: 0.003733, melting_c: -157.36, boiling_c: -153.22, summary: 'Used in lighting' },
-  { number: 37, symbol: 'Rb', name: 'Rubidium', atomic_mass: 85.468, category: 'Alkali metal', electron_configuration: '[Kr] 5s1', electronegativity: 0.82, density: 1.532, melting_c: 39.31, boiling_c: 688, summary: 'Soft, reactive metal' },
-  { number: 38, symbol: 'Sr', name: 'Strontium', atomic_mass: 87.62, category: 'Alkaline earth metal', electron_configuration: '[Kr] 5s2', electronegativity: 0.95, density: 2.64, melting_c: 777, boiling_c: 1382, summary: 'Used in fireworks' },
-  { number: 39, symbol: 'Y', name: 'Yttrium', atomic_mass: 88.906, category: 'Transition metal', electron_configuration: '[Kr] 4d1 5s2', electronegativity: 1.22, density: 4.472, melting_c: 1526, boiling_c: 3337, summary: 'Used in LEDs and superconductors' },
-  { number: 40, symbol: 'Zr', name: 'Zirconium', atomic_mass: 91.224, category: 'Transition metal', electron_configuration: '[Kr] 4d2 5s2', electronegativity: 1.33, density: 6.52, melting_c: 1855, boiling_c: 4409, summary: 'Corrosion-resistant metal' },
-  { number: 41, symbol: 'Nb', name: 'Niobium', atomic_mass: 92.906, category: 'Transition metal', electron_configuration: '[Kr] 4d4 5s1', electronegativity: 1.6, density: 8.57, melting_c: 2477, boiling_c: 4744, summary: 'Used in superconducting alloys' },
-  { number: 42, symbol: 'Mo', name: 'Molybdenum', atomic_mass: 95.95, category: 'Transition metal', electron_configuration: '[Kr] 4d5 5s1', electronegativity: 2.16, density: 10.28, melting_c: 2623, boiling_c: 4639, summary: 'High-strength steel additive' },
-  { number: 43, symbol: 'Tc', name: 'Technetium', atomic_mass: 98, category: 'Transition metal', electron_configuration: '[Kr] 4d5 5s2', electronegativity: 1.9, density: 11, melting_c: 2157, boiling_c: 4265, summary: 'First artificially produced element' },
-  { number: 44, symbol: 'Ru', name: 'Ruthenium', atomic_mass: 101.07, category: 'Transition metal', electron_configuration: '[Kr] 4d7 5s1', electronegativity: 2.2, density: 12.45, melting_c: 2334, boiling_c: 4150, summary: 'Platinum-group metal' },
-  { number: 45, symbol: 'Rh', name: 'Rhodium', atomic_mass: 102.91, category: 'Transition metal', electron_configuration: '[Kr] 4d8 5s1', electronegativity: 2.28, density: 12.41, melting_c: 1964, boiling_c: 3695, summary: 'Highly reflective, corrosion-resistant' },
-  { number: 46, symbol: 'Pd', name: 'Palladium', atomic_mass: 106.42, category: 'Transition metal', electron_configuration: '[Kr] 4d10', electronegativity: 2.20, density: 12.023, melting_c: 1554.9, boiling_c: 2963, summary: 'Used in catalytic converters' },
-  { number: 47, symbol: 'Ag', name: 'Silver', atomic_mass: 107.87, category: 'Transition metal', electron_configuration: '[Kr] 4d10 5s1', electronegativity: 1.93, density: 10.49, melting_c: 961.78, boiling_c: 2162, summary: 'Best conductor of electricity' },
-  { number: 48, symbol: 'Cd', name: 'Cadmium', atomic_mass: 112.41, category: 'Transition metal', electron_configuration: '[Kr] 4d10 5s2', electronegativity: 1.69, density: 8.65, melting_c: 321.07, boiling_c: 767, summary: 'Toxic, used in batteries' },
-  { number: 49, symbol: 'In', name: 'Indium', atomic_mass: 114.82, category: 'Post-transition metal', electron_configuration: '[Kr] 4d10 5s2 5p1', electronegativity: 1.78, density: 7.31, melting_c: 156.6, boiling_c: 2072, summary: 'Used in electronics' },
-  { number: 50, symbol: 'Sn', name: 'Tin', atomic_mass: 118.71, category: 'Post-transition metal', electron_configuration: '[Kr] 4d10 5s2 5p2', electronegativity: 1.96, density: 7.31, melting_c: 231.93, boiling_c: 2602, summary: 'Used in alloys and coatings' },
-  { number: 51, symbol: 'Sb', name: 'Antimony', atomic_mass: 121.76, category: 'Metalloid', electron_configuration: '[Kr] 4d10 5s2 5p3', electronegativity: 2.05, density: 6.697, melting_c: 630.63, boiling_c: 1587, summary: 'Used in flame retardants' },
-  { number: 52, symbol: 'Te', name: 'Tellurium', atomic_mass: 127.60, category: 'Metalloid', electron_configuration: '[Kr] 4d10 5s2 5p4', electronegativity: 2.1, density: 6.24, melting_c: 449.51, boiling_c: 988, summary: 'Used in alloys and solar panels' },
-  { number: 53, symbol: 'I', name: 'Iodine', atomic_mass: 126.90, category: 'Halogen', electron_configuration: '[Kr] 4d10 5s2 5p5', electronegativity: 2.66, density: 4.933, melting_c: 113.7, boiling_c: 184.3, summary: 'Used in antiseptics' },
-  { number: 54, symbol: 'Xe', name: 'Xenon', atomic_mass: 131.29, category: 'Noble gas', electron_configuration: '[Kr] 4d10 5s2 5p6', electronegativity: null, density: 0.005894, melting_c: -111.8, boiling_c: -108.1, summary: 'Used in lighting' },
-  { number: 55, symbol: 'Cs', name: 'Cesium', atomic_mass: 132.91, category: 'Alkali metal', electron_configuration: '[Xe] 6s1', electronegativity: 0.79, density: 1.873, melting_c: 28.44, boiling_c: 671, summary: 'Extremely reactive metal' },
-  { number: 56, symbol: 'Ba', name: 'Barium', atomic_mass: 137.33, category: 'Alkaline earth metal', electron_configuration: '[Xe] 6s2', electronegativity: 0.89, density: 3.62, melting_c: 727, boiling_c: 1845, summary: 'Used in fireworks and drilling fluids' },
-  { number: 57, symbol: 'La', name: 'Lanthanum', atomic_mass: 138.91, category: 'Lanthanide', electron_configuration: '[Xe] 5d1 6s2', electronegativity: 1.10, density: 6.145, melting_c: 920, boiling_c: 3464, summary: 'Soft, malleable metal' },
-  { number: 58, symbol: 'Ce', name: 'Cerium', atomic_mass: 140.12, category: 'Lanthanide', electron_configuration: '[Xe] 4f1 5d1 6s2', electronegativity: 1.12, density: 6.770, melting_c: 798, boiling_c: 3426, summary: 'Used in catalytic converters' },
-  { number: 59, symbol: 'Pr', name: 'Praseodymium', atomic_mass: 140.91, category: 'Lanthanide', electron_configuration: '[Xe] 4f3 6s2', electronegativity: 1.13, density: 6.773, melting_c: 931, boiling_c: 3520, summary: 'Soft, silvery metal' },
-  { number: 60, symbol: 'Nd', name: 'Neodymium', atomic_mass: 144.24, category: 'Lanthanide', electron_configuration: '[Xe] 4f4 6s2', electronegativity: 1.14, density: 7.007, melting_c: 1024, boiling_c: 3074, summary: 'Used in strong magnets' },
-];
-// Elements 61–90
-const moreElements2 = [
-  { number: 61, symbol: 'Pm', name: 'Promethium', atomic_mass: 145, category: 'Lanthanide', electron_configuration: '[Xe] 4f5 6s2', electronegativity: 1.13, density: 7.26, melting_c: 1042, boiling_c: 3000, summary: 'Radioactive, rare' },
-  { number: 62, symbol: 'Sm', name: 'Samarium', atomic_mass: 150.36, category: 'Lanthanide', electron_configuration: '[Xe] 4f6 6s2', electronegativity: 1.17, density: 7.52, melting_c: 1072, boiling_c: 1794, summary: 'Used in magnets and lasers' },
-  { number: 63, symbol: 'Eu', name: 'Europium', atomic_mass: 151.96, category: 'Lanthanide', electron_configuration: '[Xe] 4f7 6s2', electronegativity: 1.2, density: 5.264, melting_c: 822, boiling_c: 1529, summary: 'Red phosphor in TV screens' },
-  { number: 64, symbol: 'Gd', name: 'Gadolinium', atomic_mass: 157.25, category: 'Lanthanide', electron_configuration: '[Xe] 4f7 5d1 6s2', electronegativity: 1.20, density: 7.90, melting_c: 1312, boiling_c: 3273, summary: 'Used in MRI contrast agents' },
-  { number: 65, symbol: 'Tb', name: 'Terbium', atomic_mass: 158.93, category: 'Lanthanide', electron_configuration: '[Xe] 4f9 6s2', electronegativity: 1.2, density: 8.23, melting_c: 1356, boiling_c: 3230, summary: 'Used in green phosphors' },
-  { number: 66, symbol: 'Dy', name: 'Dysprosium', atomic_mass: 162.50, category: 'Lanthanide', electron_configuration: '[Xe] 4f10 6s2', electronegativity: 1.22, density: 8.54, melting_c: 1412, boiling_c: 2567, summary: 'Used in magnets' },
-  { number: 67, symbol: 'Ho', name: 'Holmium', atomic_mass: 164.93, category: 'Lanthanide', electron_configuration: '[Xe] 4f11 6s2', electronegativity: 1.23, density: 8.80, melting_c: 1474, boiling_c: 2700, summary: 'Used in lasers and magnets' },
-  { number: 68, symbol: 'Er', name: 'Erbium', atomic_mass: 167.26, category: 'Lanthanide', electron_configuration: '[Xe] 4f12 6s2', electronegativity: 1.24, density: 9.066, melting_c: 1529, boiling_c: 2868, summary: 'Used in fiber optics' },
-  { number: 69, symbol: 'Tm', name: 'Thulium', atomic_mass: 168.93, category: 'Lanthanide', electron_configuration: '[Xe] 4f13 6s2', electronegativity: 1.25, density: 9.32, melting_c: 1545, boiling_c: 1950, summary: 'Rare, used in lasers' },
-  { number: 70, symbol: 'Yb', name: 'Ytterbium', atomic_mass: 173.05, category: 'Lanthanide', electron_configuration: '[Xe] 4f14 6s2', electronegativity: 1.1, density: 6.965, melting_c: 824, boiling_c: 1196, summary: 'Used in atomic clocks' },
-  { number: 71, symbol: 'Lu', name: 'Lutetium', atomic_mass: 174.97, category: 'Lanthanide', electron_configuration: '[Xe] 4f14 5d1 6s2', electronegativity: 1.27, density: 9.84, melting_c: 1663, boiling_c: 3402, summary: 'Hard, dense metal' },
-  { number: 72, symbol: 'Hf', name: 'Hafnium', atomic_mass: 178.49, category: 'Transition metal', electron_configuration: '[Xe] 4f14 5d2 6s2', electronegativity: 1.3, density: 13.31, melting_c: 2233, boiling_c: 4603, summary: 'Used in nuclear reactors' },
-  { number: 73, symbol: 'Ta', name: 'Tantalum', atomic_mass: 180.95, category: 'Transition metal', electron_configuration: '[Xe] 4f14 5d3 6s2', electronegativity: 1.5, density: 16.65, melting_c: 3017, boiling_c: 5458, summary: 'Resists corrosion' },
-  { number: 74, symbol: 'W', name: 'Tungsten', atomic_mass: 183.84, category: 'Transition metal', electron_configuration: '[Xe] 4f14 5d4 6s2', electronegativity: 2.36, density: 19.25, melting_c: 3422, boiling_c: 5555, summary: 'Highest melting point metal' },
-  { number: 75, symbol: 'Re', name: 'Rhenium', atomic_mass: 186.21, category: 'Transition metal', electron_configuration: '[Xe] 4f14 5d5 6s2', electronegativity: 1.9, density: 21.02, melting_c: 3186, boiling_c: 5596, summary: 'Very rare, high melting point' },
-  { number: 76, symbol: 'Os', name: 'Osmium', atomic_mass: 190.23, category: 'Transition metal', electron_configuration: '[Xe] 4f14 5d6 6s2', electronegativity: 2.2, density: 22.59, melting_c: 3033, boiling_c: 5027, summary: 'Densest natural element' },
-  { number: 77, symbol: 'Ir', name: 'Iridium', atomic_mass: 192.22, category: 'Transition metal', electron_configuration: '[Xe] 4f14 5d7 6s2', electronegativity: 2.20, density: 22.56, melting_c: 2466, boiling_c: 4428, summary: 'Extremely corrosion-resistant' },
-  { number: 78, symbol: 'Pt', name: 'Platinum', atomic_mass: 195.08, category: 'Transition metal', electron_configuration: '[Xe] 4f14 5d9 6s1', electronegativity: 2.28, density: 21.45, melting_c: 1768, boiling_c: 3825, summary: 'Used in jewelry and catalysts' },
-  { number: 79, symbol: 'Au', name: 'Gold', atomic_mass: 196.97, category: 'Transition metal', electron_configuration: '[Xe] 4f14 5d10 6s1', electronegativity: 2.54, density: 19.32, melting_c: 1064, boiling_c: 2856, summary: 'Precious metal, good conductor' },
-  { number: 80, symbol: 'Hg', name: 'Mercury', atomic_mass: 200.59, category: 'Transition metal', electron_configuration: '[Xe] 4f14 5d10 6s2', electronegativity: 2.00, density: 13.534, melting_c: -38.83, boiling_c: 356.73, summary: 'Liquid at room temperature' },
-  { number: 81, symbol: 'Tl', name: 'Thallium', atomic_mass: 204.38, category: 'Post-transition metal', electron_configuration: '[Xe] 4f14 5d10 6s2 6p1', electronegativity: 1.62, density: 11.85, melting_c: 304, boiling_c: 1473, summary: 'Highly toxic metal' },
-  { number: 82, symbol: 'Pb', name: 'Lead', atomic_mass: 207.2, category: 'Post-transition metal', electron_configuration: '[Xe] 4f14 5d10 6s2 6p2', electronegativity: 2.33, density: 11.34, melting_c: 327.46, boiling_c: 1749, summary: 'Toxic, used in batteries and shielding' },
-  { number: 83, symbol: 'Bi', name: 'Bismuth', atomic_mass: 208.98, category: 'Post-transition metal', electron_configuration: '[Xe] 4f14 5d10 6s2 6p3', electronegativity: 2.02, density: 9.807, melting_c: 271.4, boiling_c: 1564, summary: 'Low-toxicity metal' },
-  { number: 84, symbol: 'Po', name: 'Polonium', atomic_mass: 209, category: 'Metalloid', electron_configuration: '[Xe] 4f14 5d10 6s2 6p4', electronegativity: 2.0, density: 9.32, melting_c: 254, boiling_c: 962, summary: 'Radioactive, rare' },
-  { number: 85, symbol: 'At', name: 'Astatine', atomic_mass: 210, category: 'Halogen', electron_configuration: '[Xe] 4f14 5d10 6s2 6p5', electronegativity: 2.2, density: 7, melting_c: 302, boiling_c: 337, summary: 'Radioactive halogen' },
-  { number: 86, symbol: 'Rn', name: 'Radon', atomic_mass: 222, category: 'Noble gas', electron_configuration: '[Xe] 4f14 5d10 6s2 6p6', electronegativity: null, density: 0.00973, melting_c: -71, boiling_c: -62, summary: 'Radioactive, inert gas' },
-  { number: 87, symbol: 'Fr', name: 'Francium', atomic_mass: 223, category: 'Alkali metal', electron_configuration: '[Rn] 7s1', electronegativity: 0.7, density: 2.48, melting_c: 27, boiling_c: 677, summary: 'Extremely rare and radioactive' },
-  { number: 88, symbol: 'Ra', name: 'Radium', atomic_mass: 226, category: 'Alkaline earth metal', electron_configuration: '[Rn] 7s2', electronegativity: 0.9, density: 5.5, melting_c: 700, boiling_c: 1140, summary: 'Radioactive, used in luminescent paints' },
-  { number: 89, symbol: 'Ac', name: 'Actinium', atomic_mass: 227, category: 'Actinide', electron_configuration: '[Rn] 6d1 7s2', electronegativity: 1.1, density: 10.07, melting_c: 1050, boiling_c: 3200, summary: 'Radioactive, rare' },
-  { number: 90, symbol: 'Th', name: 'Thorium', atomic_mass: 232.04, category: 'Actinide', electron_configuration: '[Rn] 6d2 7s2', electronegativity: 1.3, density: 11.72, melting_c: 1750, boiling_c: 4820, summary: 'Radioactive, potential nuclear fuel' },
-];
-// Elements 91–118
-const moreElements3 = [
-  { number: 91, symbol: 'Pa', name: 'Protactinium', atomic_mass: 231.04, category: 'Actinide', electron_configuration: '[Rn] 5f2 6d1 7s2', electronegativity: 1.5, density: 15.37, melting_c: 1572, boiling_c: 4000, summary: 'Radioactive, rare' },
-  { number: 92, symbol: 'U', name: 'Uranium', atomic_mass: 238.03, category: 'Actinide', electron_configuration: '[Rn] 5f3 6d1 7s2', electronegativity: 1.38, density: 18.95, melting_c: 1132, boiling_c: 4131, summary: 'Fissile material, radioactive' },
-  { number: 93, symbol: 'Np', name: 'Neptunium', atomic_mass: 237, category: 'Actinide', electron_configuration: '[Rn] 5f4 6d1 7s2', electronegativity: 1.36, density: 20.45, melting_c: 637, boiling_c: 4175, summary: 'Radioactive, used in research' },
-  { number: 94, symbol: 'Pu', name: 'Plutonium', atomic_mass: 244, category: 'Actinide', electron_configuration: '[Rn] 5f6 7s2', electronegativity: 1.28, density: 19.84, melting_c: 639, boiling_c: 3228, summary: 'Fissile, radioactive' },
-  { number: 95, symbol: 'Am', name: 'Americium', atomic_mass: 243, category: 'Actinide', electron_configuration: '[Rn] 5f7 7s2', electronegativity: 1.3, density: 13.67, melting_c: 1176, boiling_c: 2607, summary: 'Used in smoke detectors' },
-  { number: 96, symbol: 'Cm', name: 'Curium', atomic_mass: 247, category: 'Actinide', electron_configuration: '[Rn] 5f7 6d1 7s2', electronegativity: 1.3, density: 13.51, melting_c: 1340, boiling_c: 3110, summary: 'Highly radioactive' },
-  { number: 97, symbol: 'Bk', name: 'Berkelium', atomic_mass: 247, category: 'Actinide', electron_configuration: '[Rn] 5f9 7s2', electronegativity: 1.3, density: 14.78, melting_c: 986, boiling_c: 2627, summary: 'Synthetic, radioactive' },
-  { number: 98, symbol: 'Cf', name: 'Californium', atomic_mass: 251, category: 'Actinide', electron_configuration: '[Rn] 5f10 7s2', electronegativity: 1.3, density: 15.1, melting_c: 900, boiling_c: 1473, summary: 'Highly radioactive' },
-  { number: 99, symbol: 'Es', name: 'Einsteinium', atomic_mass: 252, category: 'Actinide', electron_configuration: '[Rn] 5f11 7s2', electronegativity: 1.3, density: 8.84, melting_c: 860, boiling_c: null, summary: 'Synthetic, radioactive' },
-  { number: 100, symbol: 'Fm', name: 'Fermium', atomic_mass: 257, category: 'Actinide', electron_configuration: '[Rn] 5f12 7s2', electronegativity: 1.3, density: 9.3, melting_c: 1527, boiling_c: null, summary: 'Synthetic, radioactive' },
-  { number: 101, symbol: 'Md', name: 'Mendelevium', atomic_mass: 258, category: 'Actinide', electron_configuration: '[Rn] 5f13 7s2', electronegativity: 1.3, density: 10.3, melting_c: null, boiling_c: null, summary: 'Synthetic, radioactive' },
-  { number: 102, symbol: 'No', name: 'Nobelium', atomic_mass: 259, category: 'Actinide', electron_configuration: '[Rn] 5f14 7s2', electronegativity: 1.3, density: 9.9, melting_c: null, boiling_c: null, summary: 'Synthetic, radioactive' },
-  { number: 103, symbol: 'Lr', name: 'Lawrencium', atomic_mass: 262, category: 'Actinide', electron_configuration: '[Rn] 5f14 7s2 7p1', electronegativity: 1.3, density: 15.6, melting_c: null, boiling_c: null, summary: 'Synthetic, radioactive' },
-  { number: 104, symbol: 'Rf', name: 'Rutherfordium', atomic_mass: 267, category: 'Transition metal', electron_configuration: '[Rn] 5f14 6d2 7s2', electronegativity: null, density: null, melting_c: null, boiling_c: null, summary: 'Synthetic, radioactive' },
-  { number: 105, symbol: 'Db', name: 'Dubnium', atomic_mass: 270, category: 'Transition metal', electron_configuration: '[Rn] 5f14 6d3 7s2', electronegativity: null, density: null, melting_c: null, boiling_c: null, summary: 'Synthetic, radioactive' },
-  { number: 106, symbol: 'Sg', name: 'Seaborgium', atomic_mass: 271, category: 'Transition metal', electron_configuration: '[Rn] 5f14 6d4 7s2', electronegativity: null, density: null, melting_c: null, boiling_c: null, summary: 'Synthetic, radioactive' },
-  { number: 107, symbol: 'Bh', name: 'Bohrium', atomic_mass: 270, category: 'Transition metal', electron_configuration: '[Rn] 5f14 6d5 7s2', electronegativity: null, density: null, melting_c: null, boiling_c: null, summary: 'Synthetic, radioactive' },
-  { number: 108, symbol: 'Hs', name: 'Hassium', atomic_mass: 277, category: 'Transition metal', electron_configuration: '[Rn] 5f14 6d6 7s2', electronegativity: null, density: null, melting_c: null, boiling_c: null, summary: 'Synthetic, radioactive' },
-  { number: 109, symbol: 'Mt', name: 'Meitnerium', atomic_mass: 276, category: 'Transition metal', electron_configuration: '[Rn] 5f14 6d7 7s2', electronegativity: null, density: null, melting_c: null, boiling_c: null, summary: 'Synthetic, radioactive' },
-  { number: 110, symbol: 'Ds', name: 'Darmstadtium', atomic_mass: 281, category: 'Transition metal', electron_configuration: '[Rn] 5f14 6d8 7s2', electronegativity: null, density: null, melting_c: null, boiling_c: null, summary: 'Synthetic, radioactive' },
-  { number: 111, symbol: 'Rg', name: 'Roentgenium', atomic_mass: 282, category: 'Transition metal', electron_configuration: '[Rn] 5f14 6d9 7s2', electronegativity: null, density: null, melting_c: null, boiling_c: null, summary: 'Synthetic, radioactive' },
-  { number: 112, symbol: 'Cn', name: 'Copernicium', atomic_mass: 285, category: 'Transition metal', electron_configuration: '[Rn] 5f14 6d10 7s2', electronegativity: null, density: null, melting_c: null, boiling_c: null, summary: 'Synthetic, radioactive' },
-  { number: 113, symbol: 'Nh', name: 'Nihonium', atomic_mass: 286, category: 'Post-transition metal', electron_configuration: '[Rn] 5f14 6d10 7s2 7p1', electronegativity: null, density: null, melting_c: null, boiling_c: null, summary: 'Synthetic, radioactive' },
-  { number: 114, symbol: 'Fl', name: 'Flerovium', atomic_mass: 289, category: 'Post-transition metal', electron_configuration: '[Rn] 5f14 6d10 7s2 7p2', electronegativity: null, density: null, melting_c: null, boiling_c: null, summary: 'Synthetic, radioactive' },
-  { number: 115, symbol: 'Mc', name: 'Moscovium', atomic_mass: 288, category: 'Post-transition metal', electron_configuration: '[Rn] 5f14 6d10 7s2 7p3', electronegativity: null, density: null, melting_c: null, boiling_c: null, summary: 'Synthetic, radioactive' },
-  { number: 116, symbol: 'Lv', name: 'Livermorium', atomic_mass: 293, category: 'Post-transition metal', electron_configuration: '[Rn] 5f14 6d10 7s2 7p4', electronegativity: null, density: null, melting_c: null, boiling_c: null, summary: 'Synthetic, radioactive' },
-  { number: 117, symbol: 'Ts', name: 'Tennessine', atomic_mass: 294, category: 'Halogen', electron_configuration: '[Rn] 5f14 6d10 7s2 7p5', electronegativity: null, density: null, melting_c: null, boiling_c: null, summary: 'Synthetic, radioactive' },
-  { number: 118, symbol: 'Og', name: 'Oganesson', atomic_mass: 294, category: 'Noble gas', electron_configuration: '[Rn] 5f14 6d10 7s2 7p6', electronegativity: null, density: null, melting_c: null, boiling_c: null, summary: 'Synthetic, radioactive' },
-];
-const elements = [
-  ...elements1, // 1–30
-  ...moreElements, // 31–60
-  ...moreElements2, // 61–90
-  ...moreElements3 // 91–118
-];
-  const handleLookup = () => {
-    const q = query.trim().toLowerCase();
-    const found = elements.find(el =>
-      el.symbol.toLowerCase() === q ||
-      el.name.toLowerCase() === q ||
-      el.number === Number(q)
-    );
-    setResult(found || null);
-  };
+    const searchBox = document.getElementById('searchBox');
+    const resultsDiv = document.getElementById('results');
 
-  return (
-    <div>
-      <h1>Periodic Table Lookup</h1>
-      <input
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Enter symbol, name, or number"
-      />
-      <button onClick={handleLookup}>Search</button>
-      {result && (
-        <div>
-          <h2>{result.name} ({result.symbol})</h2>
-          <p>Atomic #: {result.number}</p>
-          <p>Mass: {result.atomic_mass}</p>
-          <p>Category: {result.category}</p>
-          <p>Summary: {result.summary}</p>
-        </div>
-      )}
-    </div>
-  );
-}
+    searchBox.addEventListener('input', () => {
+      const query = searchBox.value.toLowerCase();
+      resultsDiv.innerHTML = '';
+      if (query.length === 0) return;
+
+      const matches = elements.filter(el =>
+        el.name.toLowerCase().includes(query) ||
+        el.symbol.toLowerCase().includes(query) ||
+        el.number.toString() === query
+      );
+
+      if (matches.length === 0) {
+        resultsDiv.innerHTML = "<p>No results found.</p>";
+      } else {
+        matches.forEach(el => {
+          const protons = el.number;
+          const electrons = el.number;
+          const neutrons = Math.round(el.mass) - el.number;
+          const div = document.createElement('div');
+          div.className = 'element';
+          div.innerHTML = `
+            <strong>${el.name} (${el.symbol})</strong>
+            <div class="property">Atomic Number: ${el.number}</div>
+            <div class="property">Atomic Mass: ${el.mass}</div>
+            <div class="property">Protons: ${protons}</div>
+            <div class="property">Neutrons: ${neutrons}</div>
+            <div class="property">Electrons: ${electrons}</div>
+            <div class="property">Family: ${el.family}</div>
+          `;
+          resultsDiv.appendChild(div);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
