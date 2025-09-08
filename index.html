@@ -73,34 +73,40 @@
     <div id="results"></div>
   </div>
 
+  <!-- Place script at the end, after the DOM elements -->
   <script>
-    // ---- LOCK SCREEN FUNCTIONALITY ----
-    const PASSWORD = "25267"; // <--- Set your password here
+    document.addEventListener("DOMContentLoaded", function() {
+      // ---- LOCK SCREEN FUNCTIONALITY ----
+      const PASSWORD = "letmein"; // <--- Set your password here
 
-    const lockScreen = document.getElementById('lockScreen');
-    const mainApp = document.getElementById('mainApp');
-    const passwordBox = document.getElementById('passwordBox');
-    const unlockBtn = document.getElementById('unlockBtn');
-    const lockError = document.getElementById('lockError');
+      const lockScreen = document.getElementById('lockScreen');
+      const mainApp = document.getElementById('mainApp');
+      const passwordBox = document.getElementById('passwordBox');
+      const unlockBtn = document.getElementById('unlockBtn');
+      const lockError = document.getElementById('lockError');
 
-    function unlockApp() {
-      if (passwordBox.value === PASSWORD) {
-        lockScreen.style.display = 'none';
-        mainApp.style.display = 'block';
-      } else {
-        lockError.textContent = "Incorrect password. Try again.";
-        passwordBox.value = "";
+      function unlockApp() {
+        if (passwordBox.value === PASSWORD) {
+          lockScreen.style.display = 'none';
+          mainApp.style.display = 'block';
+          // Optionally, focus search box for user convenience
+          setTimeout(() => {
+            document.getElementById('searchBox').focus();
+          }, 100);
+        } else {
+          lockError.textContent = "Incorrect password. Try again.";
+          passwordBox.value = "";
+        }
       }
-    }
 
-    unlockBtn.addEventListener('click', unlockApp);
-    passwordBox.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') unlockApp();
-    });
+      unlockBtn.addEventListener('click', unlockApp);
+      passwordBox.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') unlockApp();
+      });
 
-    // ---- ELEMENT SEARCH FUNCTIONALITY ----
-    const elements = [
-      {number: 1, symbol: "H", name: "Hydrogen", mass: 1.008, family: "Nonmetal"},
+      // ---- ELEMENT SEARCH FUNCTIONALITY ----
+      const elements = [
+        {number: 1, symbol: "H", name: "Hydrogen", mass: 1.008, family: "Nonmetal"},
       {number: 2, symbol: "He", name: "Helium", mass: 4.0026, family: "Noble Gas"},
       {number: 3, symbol: "Li", name: "Lithium", mass: 6.94, family: "Alkali Metal"},
       {number: 4, symbol: "Be", name: "Beryllium", mass: 9.0122, family: "Alkaline Earth Metal"},
@@ -129,135 +135,137 @@
       {number: 27, symbol: "Co", name: "Cobalt", mass: 58.933, family: "Transition Metal"},
       {number: 28, symbol: "Ni", name: "Nickel", mass: 58.693, family: "Transition Metal"},
       {number: 29, symbol: "Cu", name: "Copper", mass: 63.546, family: "Transition Metal"},
-      {number: 30, symbol: "Zn", name: "Zinc", mass: 65.38, family: "Transition Metal"},
-      {number: 31, symbol: "Ga", name: "Gallium", mass: 69.723, family: "Post-transition Metal"},
-      {number: 32, symbol: "Ge", name: "Germanium", mass: 72.630, family: "Metalloid"},
-      {number: 33, symbol: "As", name: "Arsenic", mass: 74.922, family: "Metalloid"},
-      {number: 34, symbol: "Se", name: "Selenium", mass: 78.971, family: "Nonmetal"},
-      {number: 35, symbol: "Br", name: "Bromine", mass: 79.904, family: "Halogen"},
-      {number: 36, symbol: "Kr", name: "Krypton", mass: 83.798, family: "Noble Gas"},
-      {number: 37, symbol: "Rb", name: "Rubidium", mass: 85.468, family: "Alkali Metal"},
-      {number: 38, symbol: "Sr", name: "Strontium", mass: 87.62, family: "Alkaline Earth Metal"},
-      {number: 39, symbol: "Y", name: "Yttrium", mass: 88.906, family: "Transition Metal"},
-      {number: 40, symbol: "Zr", name: "Zirconium", mass: 91.224, family: "Transition Metal"},
-      {number: 41, symbol: "Nb", name: "Niobium", mass: 92.906, family: "Transition Metal"},
-      {number: 42, symbol: "Mo", name: "Molybdenum", mass: 95.95, family: "Transition Metal"},
-      {number: 43, symbol: "Tc", name: "Technetium", mass: 98, family: "Transition Metal"},
-      {number: 44, symbol: "Ru", name: "Ruthenium", mass: 101.07, family: "Transition Metal"},
-      {number: 45, symbol: "Rh", name: "Rhodium", mass: 102.91, family: "Transition Metal"},
-      {number: 46, symbol: "Pd", name: "Palladium", mass: 106.42, family: "Transition Metal"},
-      {number: 47, symbol: "Ag", name: "Silver", mass: 107.87, family: "Transition Metal"},
-      {number: 48, symbol: "Cd", name: "Cadmium", mass: 112.41, family: "Transition Metal"},
-      {number: 49, symbol: "In", name: "Indium", mass: 114.82, family: "Post-transition Metal"},
-      {number: 50, symbol: "Sn", name: "Tin", mass: 118.71, family: "Post-transition Metal"},
-      {number: 51, symbol: "Sb", name: "Antimony", mass: 121.76, family: "Metalloid"},
-      {number: 52, symbol: "Te", name: "Tellurium", mass: 127.60, family: "Metalloid"},
-      {number: 53, symbol: "I", name: "Iodine", mass: 126.90, family: "Halogen"},
-      {number: 54, symbol: "Xe", name: "Xenon", mass: 131.29, family: "Noble Gas"},
-      {number: 55, symbol: "Cs", name: "Cesium", mass: 132.91, family: "Alkali Metal"},
-      {number: 56, symbol: "Ba", name: "Barium", mass: 137.33, family: "Alkaline Earth Metal"},
-      {number: 57, symbol: "La", name: "Lanthanum", mass: 138.91, family: "Lanthanide"},
-      {number: 58, symbol: "Ce", name: "Cerium", mass: 140.12, family: "Lanthanide"},
-      {number: 59, symbol: "Pr", name: "Praseodymium", mass: 140.91, family: "Lanthanide"},
-      {number: 60, symbol: "Nd", name: "Neodymium", mass: 144.24, family: "Lanthanide"},
-      {number: 61, symbol: "Pm", name: "Promethium", mass: 145, family: "Lanthanide"},
-      {number: 62, symbol: "Sm", name: "Samarium", mass: 150.36, family: "Lanthanide"},
-      {number: 63, symbol: "Eu", name: "Europium", mass: 151.96, family: "Lanthanide"},
-      {number: 64, symbol: "Gd", name: "Gadolinium", mass: 157.25, family: "Lanthanide"},
-      {number: 65, symbol: "Tb", name: "Terbium", mass: 158.93, family: "Lanthanide"},
-      {number: 66, symbol: "Dy", name: "Dysprosium", mass: 162.50, family: "Lanthanide"},
-      {number: 67, symbol: "Ho", name: "Holmium", mass: 164.93, family: "Lanthanide"},
-      {number: 68, symbol: "Er", name: "Erbium", mass: 167.26, family: "Lanthanide"},
-      {number: 69, symbol: "Tm", name: "Thulium", mass: 168.93, family: "Lanthanide"},
-      {number: 70, symbol: "Yb", name: "Ytterbium", mass: 173.05, family: "Lanthanide"},
-      {number: 71, symbol: "Lu", name: "Lutetium", mass: 174.97, family: "Lanthanide"},
-      {number: 72, symbol: "Hf", name: "Hafnium", mass: 178.49, family: "Transition Metal"},
-      {number: 73, symbol: "Ta", name: "Tantalum", mass: 180.95, family: "Transition Metal"},
-      {number: 74, symbol: "W", name: "Tungsten", mass: 183.84, family: "Transition Metal"},
-      {number: 75, symbol: "Re", name: "Rhenium", mass: 186.21, family: "Transition Metal"},
-      {number: 76, symbol: "Os", name: "Osmium", mass: 190.23, family: "Transition Metal"},
-      {number: 77, symbol: "Ir", name: "Iridium", mass: 192.22, family: "Transition Metal"},
-      {number: 78, symbol: "Pt", name: "Platinum", mass: 195.08, family: "Transition Metal"},
-      {number: 79, symbol: "Au", name: "Gold", mass: 196.97, family: "Transition Metal"},
-      {number: 80, symbol: "Hg", name: "Mercury", mass: 200.59, family: "Transition Metal"},
-      {number: 81, symbol: "Tl", name: "Thallium", mass: 204.38, family: "Post-transition Metal"},
-      {number: 82, symbol: "Pb", name: "Lead", mass: 207.2, family: "Post-transition Metal"},
-      {number: 83, symbol: "Bi", name: "Bismuth", mass: 208.98, family: "Post-transition Metal"},
-      {number: 84, symbol: "Po", name: "Polonium", mass: 209, family: "Metalloid"},
-      {number: 85, symbol: "At", name: "Astatine", mass: 210, family: "Halogen"},
-      {number: 86, symbol: "Rn", name: "Radon", mass: 222, family: "Noble Gas"},
-      {number: 87, symbol: "Fr", name: "Francium", mass: 223, family: "Alkali Metal"},
-      {number: 88, symbol: "Ra", name: "Radium", mass: 226, family: "Alkaline Earth Metal"},
-      {number: 89, symbol: "Ac", name: "Actinium", mass: 227, family: "Actinide"},
-      {number: 90, symbol: "Th", name: "Thorium", mass: 232.04, family: "Actinide"},
-      {number: 91, symbol: "Pa", name: "Protactinium", mass: 231.04, family: "Actinide"},
-      {number: 92, symbol: "U", name: "Uranium", mass: 238.03, family: "Actinide"},
-      {number: 93, symbol: "Np", name: "Neptunium", mass: 237, family: "Actinide"},
-      {number: 94, symbol: "Pu", name: "Plutonium", mass: 244, family: "Actinide"},
-      {number: 95, symbol: "Am", name: "Americium", mass: 243, family: "Actinide"},
-      {number: 96, symbol: "Cm", name: "Curium", mass: 247, family: "Actinide"},
-      {number: 97, symbol: "Bk", name: "Berkelium", mass: 247, family: "Actinide"},
-      {number: 98, symbol: "Cf", name: "Californium", mass: 251, family: "Actinide"},
-      {number: 99, symbol: "Es", name: "Einsteinium", mass: 252, family: "Actinide"},
-      {number: 100, symbol: "Fm", name: "Fermium", mass: 257, family: "Actinide"},
-      {number: 101, symbol: "Md", name: "Mendelevium", mass: 258, family: "Actinide"},
-      {number: 102, symbol: "No", name: "Nobelium", mass: 259, family: "Actinide"},
-      {number: 103, symbol: "Lr", name: "Lawrencium", mass: 266, family: "Actinide"},
-      {number: 104, symbol: "Rf", name: "Rutherfordium", mass: 267, family: "Transition Metal"},
-      {number: 105, symbol: "Db", name: "Dubnium", mass: 268, family: "Transition Metal"},
-      {number: 106, symbol: "Sg", name: "Seaborgium", mass: 269, family: "Transition Metal"},
-      {number: 107, symbol: "Bh", name: "Bohrium", mass: 270, family: "Transition Metal"},
-      {number: 108, symbol: "Hs", name: "Hassium", mass: 269, family: "Transition Metal"},
-      {number: 109, symbol: "Mt", name: "Meitnerium", mass: 278, family: "Transition Metal"},
-      {number: 110, symbol: "Ds", name: "Darmstadt", mass: 281, family: "Transition Metal"},
-      {number: 111, symbol: "Rg", name: "Roentgenium", mass: 282, family: "Transition Metal"},
-      {number: 112, symbol: "Cn", name: "Copernicium", mass: 285, family: "Transition Metal"},
-      {number: 113, symbol: "Nh", name: "Nihonium", mass: 286, family: "Post-transition Metal"},
-      {number: 114, symbol: "Fl", name: "Flerovium", mass: 289, family: "Post-transition Metal"},
-      {number: 115, symbol: "Mc", name: "Moscovium", mass: 290, family: "Post-transition Metal"},
-      {number: 116, symbol: "Lv", name: "Livermorium", mass: 293, family: "Post-transition Metal"},
-      {number: 117, symbol: "Ts", name: "Tennessine", mass: 294, family: "Halogen"},
-      {number: 118, symbol: "Og", name: "Oganesson", mass: 294, family: "Noble Gas"
-    ];
+    {number: 30, symbol: "Zn", name: "Zinc", mass: 65.38, family: "Transition Metal"},
+    {number: 31, symbol: "Ga", name: "Gallium", mass: 69.723, family: "Post-transition Metal"},
+    {number: 32, symbol: "Ge", name: "Germanium", mass: 72.630, family: "Metalloid"},
+    {number: 33, symbol: "As", name: "Arsenic", mass: 74.922, family: "Metalloid"},
+    {number: 34, symbol: "Se", name: "Selenium", mass: 78.971, family: "Nonmetal"},
+    {number: 35, symbol: "Br", name: "Bromine", mass: 79.904, family: "Halogen"},
+    {number: 36, symbol: "Kr", name: "Krypton", mass: 83.798, family: "Noble Gas"},
+    {number: 37, symbol: "Rb", name: "Rubidium", mass: 85.468, family: "Alkali Metal"},
+    {number: 38, symbol: "Sr", name: "Strontium", mass: 87.62, family: "Alkaline Earth Metal"},
+    {number: 39, symbol: "Y", name: "Yttrium", mass: 88.906, family: "Transition Metal"},
+    {number: 40, symbol: "Zr", name: "Zirconium", mass: 91.224, family: "Transition Metal"},
+    {number: 41, symbol: "Nb", name: "Niobium", mass: 92.906, family: "Transition Metal"},
+    {number: 42, symbol: "Mo", name: "Molybdenum", mass: 95.95, family: "Transition Metal"},
+    {number: 43, symbol: "Tc", name: "Technetium", mass: 98, family: "Transition Metal"},
+    {number: 44, symbol: "Ru", name: "Ruthenium", mass: 101.07, family: "Transition Metal"},
+    {number: 45, symbol: "Rh", name: "Rhodium", mass: 102.91, family: "Transition Metal"},
+    {number: 46, symbol: "Pd", name: "Palladium", mass: 106.42, family: "Transition Metal"},
+    {number: 47, symbol: "Ag", name: "Silver", mass: 107.87, family: "Transition Metal"},
+    {number: 48, symbol: "Cd", name: "Cadmium", mass: 112.41, family: "Transition Metal"},
+    {number: 49, symbol: "In", name: "Indium", mass: 114.82, family: "Post-transition Metal"},
+    {number: 50, symbol: "Sn", name: "Tin", mass: 118.71, family: "Post-transition Metal"},
+    {number: 51, symbol: "Sb", name: "Antimony", mass: 121.76, family: "Metalloid"},
+    {number: 52, symbol: "Te", name: "Tellurium", mass: 127.60, family: "Metalloid"},
+    {number: 53, symbol: "I", name: "Iodine", mass: 126.90, family: "Halogen"},
+    {number: 54, symbol: "Xe", name: "Xenon", mass: 131.29, family: "Noble Gas"},
+    {number: 55, symbol: "Cs", name: "Cesium", mass: 132.91, family: "Alkali Metal"},
+    {number: 56, symbol: "Ba", name: "Barium", mass: 137.33, family: "Alkaline Earth Metal"},
+    {number: 57, symbol: "La", name: "Lanthanum", mass: 138.91, family: "Lanthanide"},
+    {number: 58, symbol: "Ce", name: "Cerium", mass: 140.12, family: "Lanthanide"},
+    {number: 59, symbol: "Pr", name: "Praseodymium", mass: 140.91, family: "Lanthanide"},
+    {number: 60, symbol: "Nd", name: "Neodymium", mass: 144.24, family: "Lanthanide"},
+    {number: 61, symbol: "Pm", name: "Promethium", mass: 145, family: "Lanthanide"},
+    {number: 62, symbol: "Sm", name: "Samarium", mass: 150.36, family: "Lanthanide"},
+    {number: 63, symbol: "Eu", name: "Europium", mass: 151.96, family: "Lanthanide"},
+    {number: 64, symbol: "Gd", name: "Gadolinium", mass: 157.25, family: "Lanthanide"},
+    {number: 65, symbol: "Tb", name: "Terbium", mass: 158.93, family: "Lanthanide"},
+    {number: 66, symbol: "Dy", name: "Dysprosium", mass: 162.50, family: "Lanthanide"},
+    {number: 67, symbol: "Ho", name: "Holmium", mass: 164.93, family: "Lanthanide"},
+    {number: 68, symbol: "Er", name: "Erbium", mass: 167.26, family: "Lanthanide"},
+    {number: 69, symbol: "Tm", name: "Thulium", mass: 168.93, family: "Lanthanide"},
+    {number: 70, symbol: "Yb", name: "Ytterbium", mass: 173.05, family: "Lanthanide"},
+    {number: 71, symbol: "Lu", name: "Lutetium", mass: 174.97, family: "Lanthanide"},
+    {number: 72, symbol: "Hf", name: "Hafnium", mass: 178.49, family: "Transition Metal"},
+    {number: 73, symbol: "Ta", name: "Tantalum", mass: 180.95, family: "Transition Metal"},
+    {number: 74, symbol: "W", name: "Tungsten", mass: 183.84, family: "Transition Metal"},
+    {number: 75, symbol: "Re", name: "Rhenium", mass: 186.21, family: "Transition Metal"},
+    {number: 76, symbol: "Os", name: "Osmium", mass: 190.23, family: "Transition Metal"},
+    {number: 77, symbol: "Ir", name: "Iridium", mass: 192.22, family: "Transition Metal"},
+    {number: 78, symbol: "Pt", name: "Platinum", mass: 195.08, family: "Transition Metal"},
+    {number: 79, symbol: "Au", name: "Gold", mass: 196.97, family: "Transition Metal"},
+    {number: 80, symbol: "Hg", name: "Mercury", mass: 200.59, family: "Transition Metal"},
+    {number: 81, symbol: "Tl", name: "Thallium", mass: 204.38, family: "Post-transition Metal"},
+    {number: 82, symbol: "Pb", name: "Lead", mass: 207.2, family: "Post-transition Metal"},
+    {number: 83, symbol: "Bi", name: "Bismuth", mass: 208.98, family: "Post-transition Metal"},
+    {number: 84, symbol: "Po", name: "Polonium", mass: 209, family: "Metalloid"},
+    {number: 85, symbol: "At", name: "Astatine", mass: 210, family: "Halogen"},
+    {number: 86, symbol: "Rn", name: "Radon", mass: 222, family: "Noble Gas"},
+    {number: 87, symbol: "Fr", name: "Francium", mass: 223, family: "Alkali Metal"},
+    {number: 88, symbol: "Ra", name: "Radium", mass: 226, family: "Alkaline Earth Metal"},
+    {number: 89, symbol: "Ac", name: "Actinium", mass: 227, family: "Actinide"},
+    {number: 90, symbol: "Th", name: "Thorium", mass: 232.04, family: "Actinide"},
+    {number: 91, symbol: "Pa", name: "Protactinium", mass: 231.04, family: "Actinide"},
+    {number: 92, symbol: "U", name: "Uranium", mass: 238.03, family: "Actinide"},
+    {number: 93, symbol: "Np", name: "Neptunium", mass: 237, family: "Actinide"},
+    {number: 94, symbol: "Pu", name: "Plutonium", mass: 244, family: "Actinide"},
+    {number: 95, symbol: "Am", name: "Americium", mass: 243, family: "Actinide"},
+    {number: 96, symbol: "Cm", name: "Curium", mass: 247, family: "Actinide"},
+    {number: 97, symbol: "Bk", name: "Berkelium", mass: 247, family: "Actinide"},
+    {number: 98, symbol: "Cf", name: "Californium", mass: 251, family: "Actinide"},
+    {number: 99, symbol: "Es", name: "Einsteinium", mass: 252, family: "Actinide"},
+    {number: 100, symbol: "Fm", name: "Fermium", mass: 257, family: "Actinide"},
+    {number: 101, symbol: "Md", name: "Mendelevium", mass: 258, family: "Actinide"},
+    {number: 102, symbol: "No", name: "Nobelium", mass: 259, family: "Actinide"},
+    {number: 103, symbol: "Lr", name: "Lawrencium", mass: 266, family: "Actinide"},
+    {number: 104, symbol: "Rf", name: "Rutherfordium", mass: 267, family: "Transition Metal"},
+    {number: 105, symbol: "Db", name: "Dubnium", mass: 268, family: "Transition Metal"},
+    {number: 106, symbol: "Sg", name: "Seaborgium", mass: 269, family: "Transition Metal"},
+    {number: 107, symbol: "Bh", name: "Bohrium", mass: 270, family: "Transition Metal"},
+    {number: 108, symbol: "Hs", name: "Hassium", mass: 269, family: "Transition Metal"},
+    {number: 109, symbol: "Mt", name: "Meitnerium", mass: 278, family: "Transition Metal"},
+    {number: 110, symbol: "Ds", name: "Darmstadt", mass: 281, family: "Transition Metal"},
+    {number: 111, symbol: "Rg", name: "Roentgenium", mass: 282, family: "Transition Metal"},
+    {number: 112, symbol: "Cn", name: "Copernicium", mass: 285, family: "Transition Metal"},
+    {number: 113, symbol: "Nh", name: "Nihonium", mass: 286, family: "Post-transition Metal"},
+    {number: 114, symbol: "Fl", name: "Flerovium", mass: 289, family: "Post-transition Metal"},
+    {number: 115, symbol: "Mc", name: "Moscovium", mass: 290, family: "Post-transition Metal"},
+    {number: 116, symbol: "Lv", name: "Livermorium", mass: 293, family: "Post-transition Metal"},
+    {number: 117, symbol: "Ts", name: "Tennessine", mass: 294, family: "Halogen"},
+    {number: 118, symbol: "Og", name: "Oganesson", mass: 294, family: "Noble Gas"}
 
-    const searchBox = document.getElementById('searchBox');
-    const resultsDiv = document.getElementById('results');
+      ];
 
-    if (searchBox) {
-      searchBox.addEventListener('input', () => {
-        const query = searchBox.value.toLowerCase();
-        resultsDiv.innerHTML = '';
-        if (query.length === 0) return;
+      const searchBox = document.getElementById('searchBox');
+      const resultsDiv = document.getElementById('results');
 
-        const matches = elements.filter(el =>
-          el.name.toLowerCase().includes(query) ||
-          el.symbol.toLowerCase().includes(query) ||
-          el.number.toString() === query
-        );
+      if (searchBox) {
+        searchBox.addEventListener('input', () => {
+          const query = searchBox.value.toLowerCase();
+          resultsDiv.innerHTML = '';
+          if (query.length === 0) return;
 
-        if (matches.length === 0) {
-          resultsDiv.innerHTML = "<p>No results found.</p>";
-        } else {
-          matches.forEach(el => {
-            const protons = el.number;
-            const electrons = el.number;
-            const neutrons = Math.round(el.mass) - el.number;
-            const div = document.createElement('div');
-            div.className = 'element';
-            div.innerHTML = `
-              <strong>${el.name} (${el.symbol})</strong>
-              <div class="property">Atomic Number: ${el.number}</div>
-              <div class="property">Atomic Mass: ${el.mass}</div>
-              <div class="property">Protons: ${protons}</div>
-              <div class="property">Neutrons: ${neutrons}</div>
-              <div class="property">Electrons: ${electrons}</div>
-              <div class="property">Family: ${el.family}</div>
-            `;
-            resultsDiv.appendChild(div);
-          });
-        }
-      });
-    }
+          const matches = elements.filter(el =>
+            el.name.toLowerCase().includes(query) ||
+            el.symbol.toLowerCase().includes(query) ||
+            el.number.toString() === query
+          );
+
+          if (matches.length === 0) {
+            resultsDiv.innerHTML = "<p>No results found.</p>";
+          } else {
+            matches.forEach(el => {
+              const protons = el.number;
+              const electrons = el.number;
+              const neutrons = Math.round(el.mass) - el.number;
+              const div = document.createElement('div');
+              div.className = 'element';
+              div.innerHTML = `
+                <strong>${el.name} (${el.symbol})</strong>
+                <div class="property">Atomic Number: ${el.number}</div>
+                <div class="property">Atomic Mass: ${el.mass}</div>
+                <div class="property">Protons: ${protons}</div>
+                <div class="property">Neutrons: ${neutrons}</div>
+                <div class="property">Electrons: ${electrons}</div>
+                <div class="property">Family: ${el.family}</div>
+              `;
+              resultsDiv.appendChild(div);
+            });
+          }
+        });
+      }
+    });
   </script>
 </body>
 </html>
